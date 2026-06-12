@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in to your Microsoft Account</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-box {
+            background: #ffffff;
+            padding: 44px;
+            width: 360px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1b1b1b;
+            margin: 0 0 16px 0;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 6px 10px;
+            border: none;
+            border-bottom: 1px solid #666;
+            font-size: 16px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-bottom: 2px solid #0067b8;
+        }
+        .btn {
+            background-color: #0067b8;
+            color: white;
+            border: none;
+            padding: 6px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            float: right;
+            min-width: 108px;
+        }
+        .btn:hover {
+            background-color: #005da6;
+        }
+        /* Awareness Modal Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.75);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+        .alert-card {
+            background: white;
+            padding: 35px;
+            border-radius: 8px;
+            max-width: 480px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .alert-card h2 { color: #d9534f; margin-top: 0; font-weight: 600; }
+        .alert-card p { color: #333; line-height: 1.6; font-size: 15px; }
+        .alert-card button {
+            background: #0067b8; color: white; border: none;
+            padding: 10px 25px; font-size: 15px; border-radius: 4px; cursor: pointer; margin-top: 15px;
+            font-weight: 600;
+        }
+        .alert-card button:hover { background: #005da6; }
+    </style>
+</head>
+<body>
+
+<div class="login-box">
+    <div style="display: flex; margin-bottom: 20px;">
+        <div style="width: 12px; height: 12px; background: #f25022; margin-right: 2px;"></div>
+        <div style="width: 12px; height: 12px; background: #7fba00;"></div>
+    </div>
+    <div style="display: flex; margin-top: -8px; margin-bottom: 20px;">
+        <div style="width: 12px; height: 12px; background: #00a4ef; margin-right: 2px;"></div>
+        <div style="width: 12px; height: 12px; background: #ffb900;"></div>
+        <span style="font-size: 16px; font-weight: 600; color: #737373; margin-left: 10px; line-height: 12px;">Microsoft</span>
+    </div>
+
+    <h1>Sign in</h1>
+    
+    <!--user login form-->
+    <form id="simulationForm" onsubmit="handleFormSubmission(event)">
+        <input type="text" id="username" placeholder="Email, phone, or Skype" required>
+        <input type="password" id="password" placeholder="Password" required>
+        
+        <div style="margin-top: 20px; overflow: hidden;">
+            <input type="submit" class="btn" value="Next">
+        </div>
+    </form>
+</div>
+
+<!-- ⚠️INVISIBLE FORM & IFRAME (Refused to connect solution) -->
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+<form id="googleFormSubmit" action="https://forms.gle/iWbGZY5wTST1Vtpn8" method="POST" target="hidden_iframe" style="display:none;">
+    <!--Entry IDs replace-->
+    <input type="hidden" id="gFormUser" name="entry.854046319" value="">
+    <input type="hidden" id="gFormAction" name="entry.323072701" value="I clicked the link and attempted to enter my data.">
+</form>
+
+<div id="awarenessModal" class="overlay">
+    <div class="alert-card">
+        <h2>⚠️ Cybersecurity Awareness Simulation</h2>
+        <p><strong>Notice: You have interacted with a simulated phishing assessment.</strong></p>
+        <p>Had this been a real cyber attack, your corporate credentials could have been compromised by an unauthorized third party. To preserve privacy and adhere to cybersecurity ethics, no actual passwords have been stored during this sandbox exercise.</p>
+        
+        <div style="text-align: left; background: #f9f9f9; padding: 15px; border-left: 4px solid #0067b8; margin: 15px 0;">
+            <strong style="color: #1b1b1b;">💡 Key Defensive Indicators:</strong><br>
+            <span style="font-size: 14px; color: #444;">
+                1. <strong>Verify the Domain URL:</strong> Always inspect the browser's address bar. Official services do not host authentication pages on local hosts or unverified third-party environments.<br>
+                2. <strong>Analyze Urgency:</strong> Phishing vectors often rely on artificial urgency (e.g., immediate password expiration) to bypass logical validation.<br>
+                3. <strong>Report Suspicious Activity:</strong> Utilize internal security reporting mechanisms when an external email requests immediate credential entry.
+            </span>
+        </div>
+        <button onclick="closeModal()">Acknowledge & Close</button>
+    </div>
+</div>
+
+<script>
+    function handleFormSubmission(event) {
+        event.preventDefault(); 
+        
+        
+        const userInput = document.getElementById("username").value;
+
+        
+        document.getElementById("gFormUser").value = userInput;
+
+        console.log("--- SECURITY EVENT LOGGED ---");
+        console.log("Submitting response safely via hidden iframe...");
+        
+        
+        document.getElementById("googleFormSubmit").submit();
+
+        
+        setTimeout(() => {
+            document.getElementById('awarenessModal').style.display = 'flex';
+        }, 500); 
+    }
+
+    function closeModal() {
+        document.getElementById('simulationForm').reset();
+        document.getElementById('awarenessModal').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
